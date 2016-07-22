@@ -94,12 +94,7 @@ static bool init_spiffs(bool allocate_mem)
     int32_t err = SPIFFS_mount(&fs, &config, work_buf, fds_buf, fdsBufSize,
             cache_buf, cacheBufSize, 0);
 
-    if (err != SPIFFS_OK) {
-        printf("Error spiffs mount: %d\n", err);
-        return false;
-    }
-
-    return true;
+    return err == SPIFFS_OK;
 }
 
 static bool format_spiffs()
@@ -222,20 +217,18 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    if (init_spiffs(/*allocate_mem=*/true)) {
-        if (format_spiffs()) {
-            if (process_directory(argv[1])) {
-                if (!write_image(argv[2])) {
-                    printf("Error writing image\n");
-                }       
-            } else {
-                printf("Error processing direcotry\n");
-            }
+    init_spiffs(/*allocate_mem=*/true);
+
+    if (format_spiffs()) {
+        if (process_directory(argv[1])) {
+            if (!write_image(argv[2])) {
+                printf("Error writing image\n");
+            }       
         } else {
-            printf("Error formating spiffs\n");
+            printf("Error processing direcotry\n");
         }
     } else {
-        printf("Error initialising SPIFFS\n");
+        printf("Error formating spiffs\n");
     }
       
     spiffs_free();
