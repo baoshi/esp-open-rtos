@@ -59,7 +59,12 @@ static s32_t _read_data(u32_t addr, u32_t size, u8_t *dst)
 
 static s32_t _write_data(u32_t addr, u32_t size, u8_t *src)
 {
-    memcpy((uint8_t*)image + addr, src, size);
+    uint32_t i;
+    uint8_t *dst = image + addr;
+
+    for (i = 0; i < size; i++) {
+        dst[i] &= src[i];  // mimic NOR flash, flip only 1 to 0
+    }
     return  SPIFFS_OK;
 }
 

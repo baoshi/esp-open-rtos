@@ -174,7 +174,7 @@ typedef unsigned char u8_t;
 #define SPIFFS_CFG_LOG_PAGE_SZ(ignore)    (256)
 #endif
 #ifndef SPIFFS_CFG_LOG_BLOCK_SZ
-#define SPIFFS_CFG_LOG_BLOCK_SZ(ignore)   (4*1024)
+#define SPIFFS_CFG_LOG_BLOCK_SZ(ignore)   (8*1024)
 #endif
 #endif
 
